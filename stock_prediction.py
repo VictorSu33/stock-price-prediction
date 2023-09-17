@@ -51,9 +51,28 @@ plt.show()
 X = df[['Open', 'High', 'Low', 'Volume']]
 y = df['Close']
 
+
 # Model Training on entire data
 model = RandomForestRegressor(n_estimators=100, random_state=42)
 model.fit(X, y)
+
+# Predict the close prices on your test data
+X_test = test_data[['Open', 'High', 'Low', 'Volume']]
+y_test = test_data['Close']
+y_pred = model.predict(X_test)
+
+# Calculate the evaluation metrics
+mae = np.mean(np.abs(y_pred - y_test))
+mse = mean_squared_error(y_test, y_pred)
+rmse = np.sqrt(mse)
+
+# Print the metrics
+print(f'Mean Absolute Error: {mae}')
+print(f'Mean Squared Error: {mse}')
+print(f'Root Mean Squared Error: {rmse}')
+
+mape = 100 * np.mean(np.abs((y_test - y_pred) / y_test))
+print(f'Mean Absolute Percentage Error: {mape}%')
 
 date_to_predict = "9999-99-99"  # Default value
 make_more = True
@@ -92,5 +111,6 @@ while make_more:
         break  # Exit the loop since a valid date was found and processed
 
     predict_another = input("Make another prediction? (Y/N):\n")
+
     if predict_another == "N":
         break
