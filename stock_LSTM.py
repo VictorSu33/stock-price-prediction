@@ -86,7 +86,7 @@ def df_to_windowed_df(dataframe, first_date, last_date, n=3):
 
   return ret_df
 
-windowed_df = df_to_windowed_df(df,df.index.min()+datetime.timedelta(days=5),df.index.max())
+windowed_df = df_to_windowed_df(df,df.index.max()-datetime.timedelta(days=365*2),df.index.max())
 
 print(windowed_df)
 
@@ -139,14 +139,37 @@ else:
     # Save the trained model
     model.save(model_path)
 
-plt.plot(dates_train,y_train)
-plt.plot(dates_train,y_train)
-plt.legend(['Training Predictions','Training Observations'])
+
+train_predictions = model.predict(X_train).flatten()
+plt.plot(dates_train, train_predictions)
+plt.plot(dates_train, y_train)
+plt.legend(['Training Predeictions','Training Observations'])
 plt.show()
 
 val_predictions = model.predict(X_val).flatten()
+plt.plot(dates_val, val_predictions)
+plt.plot(dates_val, y_val)
+plt.legend(['Validation Predeictions','Validation Observations'])
+plt.show()
 
+test_predictions = model.predict(X_test).flatten()
+plt.plot(dates_test, test_predictions)
+plt.plot(dates_test, y_test)
+plt.legend(['Training Predeictions','Training Observations'])
+plt.show()
+
+
+plt.plot(dates_train,y_train)
+plt.plot(dates_train,y_train)
 plt.plot(dates_val,val_predictions)
 plt.plot(dates_val,y_val)
-plt.legend(['Validation Predictions', 'Validation Observations'])
+plt.plot(dates_test, test_predictions)
+plt.plot(dates_test, y_test)
+plt.legend(['Training Predictions',
+            'Training Observations',
+            'Validation Predictions', 
+            'Validation Observations',
+            'Testing Predictions', 
+            'Testing Observations'])
 plt.show()
+
