@@ -86,7 +86,7 @@ def df_to_windowed_df(dataframe, first_date, last_date, n=3):
 
   return ret_df
 
-windowed_df = df_to_windowed_df(df,df.index.max()-datetime.timedelta(days=365*2),df.index.max())
+windowed_df = df_to_windowed_df(df,df.index.max()-datetime.timedelta(days=365),df.index.max())
 
 print(windowed_df)
 
