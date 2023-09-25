@@ -1,4 +1,4 @@
-# stock-price-prediction
+# Stock Price Prediction
 
 **Contributors: Andrew Wen, Victor Su, Jonathan Wen**
 
