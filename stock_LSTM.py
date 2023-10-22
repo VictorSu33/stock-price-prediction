@@ -5,10 +5,11 @@ import matplotlib.pyplot as plt
 import numpy as np
 import os
 
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.optimizers import Adam
-from tensorflow.keras import layers
-from tensorflow.keras.models import load_model
+from tensorflow import keras
+from keras import Sequential
+from keras.optimizers import Adam
+from keras import layers
+from keras.models import load_model
 model_path = './model'
 
 t = ""
@@ -122,6 +123,7 @@ plt.plot(dates_test,y_test)
 plt.legend(['Train','Validation','Test'])
 plt.show()
 
+'''
 if os.path.exists(os.path.join(model_path, 'saved_model.pb')):
     print("Loading existing model.")
     model = load_model(model_path)
@@ -138,24 +140,33 @@ else:
     
     # Save the trained model
     model.save(model_path)
+'''
 
+model = Sequential([layers.Input((3,1)),
+                        layers.LSTM(64),
+                        layers.Dense(32, activation='relu'),
+                        layers.Dense(32, activation='relu'),
+                        layers.Dense(1)])
+    
+model.compile(loss='mse', optimizer=Adam(learning_rate=0.001), metrics=['mean_absolute_error'])
+model.fit(X_train, y_train, validation_data=(X_val, y_val), epochs=100)
 
 train_predictions = model.predict(X_train).flatten()
 plt.plot(dates_train, train_predictions)
 plt.plot(dates_train, y_train)
-plt.legend(['Training Predeictions','Training Observations'])
+plt.legend(['Training Predictions','Training Observations'])
 plt.show()
 
 val_predictions = model.predict(X_val).flatten()
 plt.plot(dates_val, val_predictions)
 plt.plot(dates_val, y_val)
-plt.legend(['Validation Predeictions','Validation Observations'])
+plt.legend(['Validation Predictions','Validation Observations'])
 plt.show()
 
 test_predictions = model.predict(X_test).flatten()
 plt.plot(dates_test, test_predictions)
 plt.plot(dates_test, y_test)
-plt.legend(['Training Predeictions','Training Observations'])
+plt.legend(['Testing Predictions','Testing Observations'])
 plt.show()
 
 
@@ -172,4 +183,5 @@ plt.legend(['Training Predictions',
             'Testing Predictions', 
             'Testing Observations'])
 plt.show()
+print(len(dates_train))
 
